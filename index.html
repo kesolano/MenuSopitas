@@ -1,0 +1,792 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Menú Sopitas</title>
+    <style>
+        :root {
+            --rojo: #c82322;
+            --verde: #a5c900;
+            --amarillo: #ffd700;
+            --marron: #5d3715;
+            --azul: #2094d8;
+            --gris: #f5f5f5;
+        }
+
+        body {
+            background: url('imagenes/fondo.jpg') no-repeat center center fixed;
+            background-size: cover;
+            font-family: 'Segoe UI', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        .fondo-overlay {
+            min-height: 100vh;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 100%;
+            z-index: 1;
+        }
+
+        .app-content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .logo-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 1.25rem 0 0.75rem 0;
+            width: 100%;
+            border-radius: 0 0 50px 50px;
+        }
+
+        .logo-container img {
+            width: 110px;
+            height: 110px;
+            border-radius: 50%;
+            object-fit: cover;
+            border: 2px solid var(--verde);
+            background: white;
+        }
+
+        h1 {
+            text-align: center;
+            color: var(--marron);
+            margin: 0.5rem 0 1rem 0;
+            letter-spacing: 1px;
+            font-size: 2rem;
+        }
+
+        .menu-dia {
+            display: none;
+            width: 100%;
+            max-width: 500px;
+            margin: 0 auto;
+        }
+
+        .visible {
+            display: block;
+        }
+
+        .menu-container {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            padding: 1.25rem 0.5rem 0.5rem 0.5rem;
+            max-width: 480px;
+            margin: auto;
+        }
+
+        .card {
+            background: white;
+            border-radius: 16px;
+            box-shadow: 0 2px 10px rgba(88, 33, 19, 0.08);
+            padding: 1rem 1.1rem 0.8rem 1.1rem;
+            border-left: 8px solid var(--verde);
+            display: flex;
+            align-items: flex-start;
+            justify-content: space-between;
+            min-height: 52px;
+        }
+        
+        .card_dia {
+            background: white;
+            border-radius: 16px;
+            border-left: 8px solid var(--verde);
+            border-right: 8px solid var(--verde);
+        }
+
+        .card .nombre {
+            color: var(--marron);
+            font-weight: bold;
+            font-size: 1.1rem;
+            min-width: 98px;
+            max-width: 44vw;
+            flex-shrink: 0;
+            padding-right: 8px;
+            text-align: left;
+            display: flex;
+            align-items: flex-start;
+        }
+
+        .card .opciones-vertical {
+            display: flex;
+            flex-direction: column;
+            gap: 0.16rem;
+            min-width: 118px;
+            align-items: flex-end;
+        }
+
+        .card .opcion-tam {
+            color: #464646;
+            font-weight: 500;
+            margin-right: 0.55rem;
+        }
+
+        .card .opcion-tam.especial,
+        .card .opcion-precio.especial {
+            color: var(--rojo);
+            font-weight: bold;
+        }
+
+        .card .opcion-precio {
+            color: var(--azul);
+            font-weight: bold;
+        }
+
+        .card .solo-precio {
+            color: var(--azul);
+            font-size: 1rem;
+            font-weight: bold;
+            margin-left: 0.55rem;
+        }
+
+        .card .vegano {
+            color: var(--verde);
+            font-weight: bold;
+        }
+
+        .info {
+            color: #444;
+            margin-top: 0.48rem;
+            font-size: 0.95rem;
+            width: 100%;
+            text-align: right;
+        }
+
+        .acordeon-container {
+            width: 100%;
+            max-width: 480px;
+            margin: 2rem auto 0 auto;
+        }
+
+        .acordeon-btn {
+            width: 100%;
+            background: var(--marron);
+            border: none;
+            color: var(--gris);
+            font-size: 1.1rem;
+            font-weight: bold;
+            padding: 1rem;
+            cursor: pointer;
+            border-radius: 12px;
+            margin-bottom: 0.3rem;
+            text-align: left;
+            transition: background 0.2s;
+        }
+
+        .acordeon-btn:hover,
+        .acordeon-btn.active {
+            background: var(--verde);
+            color: var(--marron);
+        }
+
+        .acordeon-panel {
+            background: white;
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.35s ease;
+            border-radius: 0 0 12px 12px;
+            box-shadow: 0 2px 8px rgba(88, 33, 19, 0.05);
+            padding: 0 1.1rem;
+        }
+
+        .acordeon-panel-content {
+            padding: 1.2rem 0 1rem 0;
+            font-size: 1.06rem;
+            color: var(--marron);
+        }
+
+        .acordeon-panel-content ul {
+            margin-top: 0.25rem;
+            padding-left: 1.2rem;
+            color: #333;
+        }
+
+        footer {
+            width: 100%;
+            text-align: center;
+            margin: 20px 0;
+            font-size: 0.9em;
+            color: #030303;
+        }
+
+        @media (max-width: 599px) {
+            .fondo-overlay {
+                min-height: 100vh;
+            }
+
+            .logo-container img {
+                width: 80px;
+                height: 80px;
+            }
+
+            h1 {
+                font-size: 1.25rem;
+            }
+
+            .menu-container {
+                padding: 0.5rem 0.3rem 0.25rem 0.3rem;
+            }
+
+            .card {
+                padding: 0.8rem 0.6rem 0.65rem 0.7rem;
+            }
+
+            .card .nombre {
+                font-size: 1rem;
+                min-width: 80px;
+                max-width: 45vw;
+            }
+
+            .card .opciones-vertical {
+                min-width: 90px;
+            }
+
+            .acordeon-container {
+                max-width: 98vw;
+            }
+        }
+    </style>
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Mostrar solo el menú del día actual
+            const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+            const hoy = new Date().getDay();
+            const nombreDia = dias[hoy];
+            const menu = document.getElementById(nombreDia);
+            if (menu) {
+                menu.classList.add("visible");
+            } else {
+                document.body.innerHTML += "<p style='text-align:center'>No hay menú disponible hoy.</p>";
+            }
+            // Acordeón funcional
+            document.querySelectorAll('.acordeon-btn').forEach(btn => {
+                btn.addEventListener('click', function () {
+                    this.classList.toggle('active');
+                    const panel = this.nextElementSibling;
+                    if (panel.style.maxHeight) {
+                        panel.style.maxHeight = null;
+                    } else {
+                        panel.style.maxHeight = panel.scrollHeight + "px";
+                    }
+                });
+            });
+        });
+    </script>
+</head>
+
+<body>
+    <!-- Overlay translúcido para lectura sobre el fondo -->
+    <div class="fondo-overlay"></div>
+    <div class="app-content">
+        <!-- LOGO REDONDO ALTA RESOLUCIÓN -->
+        <div class="logo-container">
+            <img src="imagenes/logo.jpg" alt="Logo El Fogón de las Sopitas">
+        </div>
+        <!-- MENÚ DE LUNES -->
+        <div id="lunes" class="menu-dia">
+            <div class="card_dia">
+                <h1>MENÚ LUNES</h1>
+            </div>
+            <div class="menu-container">
+                <div class="card">
+                    <div class="nombre">Ajiaco</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam especial">Con Pierna Pernil</span><span
+                                class="opcion-precio especial">$25.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Cazuela de Lentejas</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$20.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Frijoles Rancheros</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sancocho con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sobrebarriga Salsa/Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Lengua en Salsa</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Pernil de Pollo a la Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre vegano">Plato Vegano</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Costillitas de Cerdo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card_dia" style="text-align:center; font-size:0.95rem; color:#444;margin-top:1.5rem;">
+                <span style="color:var(--marron);">Impuesto al consumo incluido</span><br>
+                <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
+            </div>
+        </div>
+        <!-- MENÚ DE MARTES -->
+        <div id="martes" class="menu-dia">
+            
+            <div class="card_dia">
+                <h1>MENÚ MARTES</h1>
+            </div>
+            <div class="menu-container">
+                <div class="card">
+                    <div class="nombre">Ajiaco</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam especial">Con Pierna Pernil</span><span
+                                class="opcion-precio especial">$25.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Mondongo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Frijoles Rancheros</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sancocho con Bagre</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Bagre</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sobrebarriga Salsa/Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Lengua en Salsa</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Pernil de Pollo a la Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre vegano">Plato Vegano</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card_dia" style="text-align:center; font-size:0.95rem; color:#444;margin-top:1.5rem;">
+                <span style="color:var(--marron);">Impuesto al consumo incluido</span><br>
+                <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
+            </div>
+        </div>
+        <!-- MENÚ DE MIÉRCOLES -->
+        <div id="miércoles" class="menu-dia">
+            <div class="card_dia">
+                <h1>MENÚ MIÉRCOLES</h1>
+            </div>
+            <div class="menu-container">
+                <div class="card">
+                    <div class="nombre">Ajiaco</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">MUTE</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam especial">Con Pierna Pernil</span><span
+                                class="opcion-precio especial">$25.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Frijoles con Pezuña</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$22.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sancocho con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Costillas de Cerdo Agridulce</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sobrebarriga Salsa/Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Lengua En Salsa</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Pernil de Pollo a la Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre vegano">Plato Vegano</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card_dia" style="text-align:center; font-size:0.95rem; color:#444;margin-top:1.5rem;">
+                <span style="color:var(--marron);">Impuesto al consumo incluido</span><br>
+                <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
+            </div>
+        </div>
+        <!-- MENÚ JUEVES -->
+        <div id="jueves" class="menu-dia">
+            <div class="card_dia">
+                <h1>MENÚ JUEVES</h1>
+            </div>
+            <div class="menu-container">
+                <div class="card">
+                    <div class="nombre">Ajiaco</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam especial">Con Pierna Pernil</span><span
+                                class="opcion-precio especial">$25.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Mondongo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Frijoles Rancheros</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Cuchuco con Espinazo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$23.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$25.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Costillitas de Cerdo Agridulce</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sobrebarriga Salsa/Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Lengua en Salsa</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Pernil de Pollo a la Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre vegano">Plato Vegano</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card_dia" style="text-align:center; font-size:0.95rem; color:#444;margin-top:1.5rem;">
+                <span style="color:var(--marron);">Impuesto al consumo incluido</span><br>
+                <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
+            </div>
+        </div>
+        <!-- MENÚ VIERNES -->
+        <div id="viernes" class="menu-dia">
+            <div class="card_dia">
+                <h1>MENÚ VIERNES</h1>
+            </div>
+            <div class="menu-container">
+                <div class="card">
+                    <div class="nombre">Ajiaco</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Mondongo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Frijoles Rancheros</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$21.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sancocho con Bagre</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Bagre</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$23.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sobrebarriga Salsa/Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$24.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Lengua en Salsa</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Pernil de Pollo a la Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre vegano">Plato Vegano</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card_dia" style="text-align:center; font-size:0.95rem; color:#444;margin-top:1.5rem;">
+                <span style="color:var(--marron);">Impuesto al consumo incluido</span><br>
+                <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
+            </div>
+        </div>
+        <!-- MENÚ SÁBADO -->
+        <div id="sábado" class="menu-dia">
+            <div class="card_dia">
+                <h1>MENÚ SÁBADO</h1>
+            </div>
+            <div class="menu-container">
+                <div class="card">
+                    <div class="nombre">Ajiaco</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$19.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Mondongo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$18.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$20.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Frijoles Rancheros</div>
+                    <div class="opciones-vertical">
+                        <div><span class="opcion-tam">Pequeño</span><span class="opcion-precio">$19.000</span></div>
+                        <div><span class="opcion-tam">Mediano</span><span class="opcion-precio">$21.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sancocho con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$19.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sancocho con Bagre</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Bagre</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$20.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Sobrebarriga Salsa/Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$22.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Lengua en Salsa</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$19.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Bandeja con Pollo</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$19.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre">Pernil de Pollo a la Plancha</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$19.000</span></div>
+                    </div>
+                </div>
+                <div class="card">
+                    <div class="nombre vegano">Plato Vegano</div>
+                    <div class="opciones-vertical">
+                        <div><span class="solo-precio">$18.000</span></div>
+                    </div>
+                </div>
+            </div>
+            <div class="card_dia" style="text-align:center; font-size:0.95rem; color:#444;margin-top:1.5rem;">
+                <span style="color:var(--marron);">Impuesto al consumo incluido</span><br>
+                <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
+            </div>
+        </div>
+
+        <!-- ACORDEÓN DE ADICIONALES Y EXTRAS -->
+        <div class="acordeon-container">
+            <button class="acordeon-btn">▶ ADICIONALES Y EXTRAS</button>
+            <div class="acordeon-panel">
+                <div class="acordeon-panel-content">
+                    <ul>
+                        <li>Mini Sopitas: <span class="opcion-precio">$15.000</span></li>
+                        <li>Sopitas: <span class="opcion-precio">$10.000</span></li>
+                        <li>Consomé o Cuchuquito: <span class="opcion-precio">$5.000</span></li>
+                        <li>Limonada Adicional: <span class="opcion-precio">$1.000</span></li>
+                        <li>Gaseosas: <span class="opcion-precio">$4.000</span></li>
+                        <li>Cola y Pola: <span class="opcion-precio">$4.000</span></li>
+                        <li>Cerveza Nacional: <span class="opcion-precio">$6.000</span></li>
+                        <li>Cerveza Importada: <span class="opcion-precio">$7.000</span></li>
+                        <li>Costeñita: <span class="opcion-precio">$3.500</span></li>
+                        <li>Botella Agua: <span class="opcion-precio">$3.500</span></li>
+                        <li>Botella Agua Gas pequeña: <span class="opcion-precio">$3.000</span></li>
+                        <li>Porción Arepa (4 Arepas): <span class="opcion-precio">$2.000</span></li>
+                        <li>Porción Arroz o Papa o Yuca o Ensalada: <span class="opcion-precio">$4.000</span></li>
+                        <li>Porción Ensalada: <span class="opcion-precio">$4.000</span></li>
+                        <li>Porción Chicharrón: <span class="opcion-precio">$6.000</span></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <footer class="footer">
+        © EL FOGÓN DE LAS SOPITAS
+        </footer>
+    </div>
+</body>
+
+</html>
