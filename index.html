@@ -15,22 +15,18 @@
             --gris: #f5f5f5;
         }
 
+        /* Fondo principal de alta resolución.
+           - Imagen debe tener alta calidad para pantallas grandes y retina.
+           - background-attachment: fixed para que no se mueva al hacer scroll.
+        */
         body {
             background: url('imagenes/fondo2.jpg') no-repeat center center fixed;
             background-size: cover;
+            background-attachment: fixed;
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
-        }
-
-        .fondo-overlay {
-            min-height: 100vh;
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 100%;
-            z-index: 1;
         }
 
         .app-content {
@@ -38,22 +34,25 @@
             z-index: 2;
         }
 
+        /* Logo circular centrado, tamaño grande para desktop */
         .logo-container {
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 1.25rem 0 0.75rem 0;
+            padding: 1.5rem 0 1rem 0;
             width: 100%;
             border-radius: 0 0 50px 50px;
         }
 
         .logo-container img {
-            width: 110px;
-            height: 110px;
+            width: 140px;
+            /* Más grande que el original */
+            height: 140px;
             border-radius: 50%;
             object-fit: cover;
-            border: 2px solid var(--verde);
+            border: 3px solid var(--verde);
             background: white;
+            box-shadow: 0 4px 18px rgba(90, 90, 90, 0.20);
         }
 
         h1 {
@@ -95,7 +94,7 @@
             justify-content: space-between;
             min-height: 52px;
         }
-        
+
         .card_dia {
             background: white;
             border-radius: 16px;
@@ -218,18 +217,26 @@
             color: #030303;
         }
 
+        /* Estilos responsivos para móviles */
         @media (max-width: 599px) {
+            body {
+                background: url('imagenes/fondo2@2x.jpg') no-repeat center center fixed;
+                background-size: cover;
+            }
+
             .fondo-overlay {
                 min-height: 100vh;
             }
 
             .logo-container img {
-                width: 80px;
-                height: 80px;
+                width: 110px;
+                /* Más grande para móvil que antes */
+                height: 110px;
+                border-width: 3px;
             }
 
             h1 {
-                font-size: 1.25rem;
+                font-size: 1.5rem;
             }
 
             .menu-container {
@@ -241,9 +248,9 @@
             }
 
             .card .nombre {
-                font-size: 1rem;
+                font-size: 1.07rem;
                 min-width: 80px;
-                max-width: 45vw;
+                max-width: 55vw;
             }
 
             .card .opciones-vertical {
@@ -252,6 +259,14 @@
 
             .acordeon-container {
                 max-width: 98vw;
+            }
+        }
+
+        /* Versión para pantallas retina para fondo */
+        @media (-webkit-min-device-pixel-ratio: 2),
+        (min-resolution: 192dpi) {
+            body {
+                background-image: url('imagenes/fondo2@2x.jpg');
             }
         }
     </style>
@@ -289,8 +304,9 @@
     <div class="app-content">
         <!-- LOGO REDONDO ALTA RESOLUCIÓN -->
         <div class="logo-container">
-            <img src="imagenes/logo.jpg" alt="Logo El Fogón de las Sopitas">
+            <img src="imagenes/logo.jpg" alt="Logo El Fogón de las Sopitas" />
         </div>
+
         <!-- MENÚ DE LUNES -->
         <div id="lunes" class="menu-dia">
             <div class="card_dia">
@@ -368,9 +384,9 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
+
         <!-- MENÚ DE MARTES -->
         <div id="martes" class="menu-dia">
-            
             <div class="card_dia">
                 <h1>MENÚ MARTES</h1>
             </div>
@@ -446,6 +462,7 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
+
         <!-- MENÚ DE MIÉRCOLES -->
         <div id="miércoles" class="menu-dia">
             <div class="card_dia">
@@ -523,6 +540,7 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
+
         <!-- MENÚ JUEVES -->
         <div id="jueves" class="menu-dia">
             <div class="card_dia">
@@ -601,6 +619,7 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
+
         <!-- MENÚ VIERNES -->
         <div id="viernes" class="menu-dia">
             <div class="card_dia">
@@ -676,6 +695,7 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
+
         <!-- MENÚ SÁBADO -->
         <div id="sábado" class="menu-dia">
             <div class="card_dia">
@@ -783,8 +803,9 @@
                 </div>
             </div>
         </div>
+
         <footer class="footer">
-        © EL FOGÓN DE LAS SOPITAS
+            © EL FOGÓN DE LAS SOPITAS
         </footer>
     </div>
 </body>
