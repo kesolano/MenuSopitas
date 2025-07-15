@@ -178,7 +178,7 @@
 
         .acordeon-panel {
             display: none;
-            background: white;
+            background: rgb(240, 233, 233);
             margin-top: 0.5rem;
             border-radius: 0 0 12px 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
@@ -751,6 +751,7 @@
                     const panel = this.nextElementSibling;
                     if (panel.classList.contains('open')) {
                         panel.classList.remove('open');
+                        this.classList.remove('active');
                     } else {
                         // Solo permite uno abierto a la vez. Si quieres múltiples abiertos, elimina este bloque:
                         document.querySelectorAll('.acordeon-panel.open').forEach(p => {
@@ -758,6 +759,7 @@
                             if (p.previousElementSibling) p.previousElementSibling.classList.remove('active');
                         });
                         panel.classList.add('open');
+                        this.classList.add('active');
                     }
                 });
             });
