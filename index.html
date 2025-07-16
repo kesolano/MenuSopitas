@@ -15,32 +15,43 @@
             --gris: #f5f5f5;
         }
 
-        /* Fondo fijo de alta resolución, que no se mueve al hacer scroll. */
+        /* Fondo fijo de alta resolución, que se mueve al hacer scroll para evitar problemas en iOS. */
         body {
-            background: url('imagenes/fondo1.png') repeat-y center center fixed;
+            background: url('imagenes/fondo1.png') no-repeat center center;
             background-size: cover;
-            background-attachment: fixed;
+            background-attachment: scroll;
+            /* Cambiado a 'scroll' para iOS */
             font-family: 'Segoe UI', Arial, sans-serif;
             margin: 0;
             padding: 0;
             min-height: 100vh;
+            display: flex;
+            /* Añadido para que el app-content ocupe la altura disponible */
+            flex-direction: column;
+            /* Añadido para layout de columna */
         }
 
         /* Overlay translúcido para máxima legibilidad del contenido sobre el fondo. */
         .fondo-overlay {
-            position: fixed;
+            position: absolute;
+            /* Cambiado a 'absolute' */
             top: 0;
             left: 0;
             right: 0;
             bottom: 0;
             background: rgba(255, 255, 255, 0.13);
             z-index: 0;
-            min-height: 100vh;
         }
 
         .app-content {
             position: relative;
             z-index: 1;
+            flex-grow: 1;
+            /* Permite que el contenido crezca y empuje el footer hacia abajo */
+            overflow-y: auto;
+            /* Permite el scroll dentro del contenido principal */
+            -webkit-overflow-scrolling: touch;
+            /* Mejora el scroll en iOS */
         }
 
         /* Logo circular centrado, más grande en móvil */
@@ -169,6 +180,11 @@
             cursor: pointer;
             margin-bottom: 0.3rem;
             transition: background 0.2s;
+            display: flex;
+            /* Para alinear el icono y el texto */
+            justify-content: space-between;
+            /* Para alinear el icono a la derecha */
+            align-items: center;
         }
 
         .acordeon-btn.active {
@@ -214,6 +230,8 @@
             padding: 2rem 0;
             font-size: 0.9rem;
             color: #333;
+            margin-top: auto;
+            /* Empuja el footer al final si el contenido es corto */
         }
 
         /* Responsive: Logo más grande en móvil, fuente/botones ajustados */
@@ -233,12 +251,10 @@
 <body>
     <div class="fondo-overlay"></div>
     <div class="app-content">
-        <!-- LOGO -->
         <div class="logo-container">
             <img src="imagenes/logo.jpg" alt="Logo El Fogón de las Sopitas">
         </div>
 
-        <!-- MENÚ LUNES -->
         <div id="lunes" class="menu-dia">
             <div class="card_dia">
                 <h1>MENÚ LUNES</h1>
@@ -315,7 +331,6 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
-        <!-- MENÚ MARTES -->
         <div id="martes" class="menu-dia">
             <div class="card_dia">
                 <h1>MENÚ MARTES</h1>
@@ -392,7 +407,6 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
-        <!-- MENÚ MIÉRCOLES -->
         <div id="miércoles" class="menu-dia">
             <div class="card_dia">
                 <h1>MENÚ MIÉRCOLES</h1>
@@ -469,7 +483,6 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
-        <!-- MENÚ JUEVES -->
         <div id="jueves" class="menu-dia">
             <div class="card_dia">
                 <h1>MENÚ JUEVES</h1>
@@ -547,7 +560,6 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
-        <!-- MENÚ VIERNES -->
         <div id="viernes" class="menu-dia">
             <div class="card_dia">
                 <h1>MENÚ VIERNES</h1>
@@ -622,7 +634,6 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
-        <!-- MENÚ SÁBADO -->
         <div id="sábado" class="menu-dia">
             <div class="card_dia">
                 <h1>MENÚ SÁBADO</h1>
@@ -703,7 +714,6 @@
                 <span style="color:var(--rojo);">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
-        <!-- ACORDEÓN DE ADICIONALES Y EXTRAS -->
         <div class="acordeon-container">
             <button class="acordeon-btn">▶ ADICIONALES Y EXTRAS</button>
             <div class="acordeon-panel">
@@ -734,35 +744,31 @@
     </div>
     <script>
         // Detecta automáticamente el día y muestra el menú correspondiente.
-        document.addEventListener('DOMContentLoaded', function () {
-            const dias = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
-            const hoy = new Date().getDay();
-            const nombreDia = dias[hoy];
-            const menu = document.getElementById(nombreDia);
-            if (menu) {
-                menu.classList.add("visible");
+        const days = ["domingo", "lunes", "martes", "miércoles", "jueves", "viernes", "sábado"];
+        const today = new Date();
+        const currentDayIndex = today.getDay(); // 0 para domingo, 1 para lunes, etc.
+        const currentDayName = days[currentDayIndex];
+
+        // Muestra el menú del día actual
+        const menuDelDia = document.getElementById(currentDayName);
+        if (menuDelDia) {
+            menuDelDia.classList.add('visible');
+        } else {
+            // Si por alguna razón no encuentra el menú del día, muestra el del lunes por defecto
+            document.getElementById('lunes').classList.add('visible');
+        }
+
+        // Manejo del acordeón
+        const acordeonBtn = document.querySelector('.acordeon-btn');
+        const acordeonPanel = document.querySelector('.acordeon-panel');
+
+        acordeonBtn.addEventListener('click', function () {
+            this.classList.toggle('active');
+            if (acordeonPanel.classList.contains('open')) {
+                acordeonPanel.classList.remove('open');
             } else {
-                document.body.innerHTML += "<p style='text-align:center'>No hay menú disponible hoy.</p>";
+                acordeonPanel.classList.add('open');
             }
-            // Acordeón funcional, sin espacio blanco inicial en móviles/iPhone
-            document.querySelectorAll('.acordeon-btn').forEach(btn => {
-                btn.addEventListener('click', function () {
-                    this.classList.toggle('active');
-                    const panel = this.nextElementSibling;
-                    if (panel.classList.contains('open')) {
-                        panel.classList.remove('open');
-                        this.classList.remove('active');
-                    } else {
-                        // Solo permite uno abierto a la vez. Si quieres múltiples abiertos, elimina este bloque:
-                        document.querySelectorAll('.acordeon-panel.open').forEach(p => {
-                            p.classList.remove('open');
-                            if (p.previousElementSibling) p.previousElementSibling.classList.remove('active');
-                        });
-                        panel.classList.add('open');
-                        this.classList.add('active');
-                    }
-                });
-            });
         });
     </script>
 </body>
