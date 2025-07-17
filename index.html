@@ -220,21 +220,6 @@
             color: #f5f0f0;
             margin-top: auto;
         }
-
-        @media (max-width: 600px) {
-            .logo-container img {
-                width: 110px;
-                height: 110px;
-            }
-
-            h1 {
-                font-size: 1.48rem;
-            }
-            .card_dia {
-            padding: 0.2px;
-            }
-        }
-
         #btn-idioma {
             background: white;
             color: var(--marron);
@@ -252,6 +237,28 @@
             background: var(--marron);
             color: white;
         }
+
+        @media (max-width: 600px) {
+            .logo-container img {
+                width: 110px;
+                height: 110px;
+            }
+
+            h1 {
+                font-size: 1.48rem;
+            }
+            .card_dia {
+            padding: 0.2px;
+            }
+            @media (max-width: 767px) {
+            #btn-idioma:hover,
+            #btn-idioma:active {
+                background: white !important;
+                color: var(--marron) !important;
+            }
+        }
+
+        
     </style>
 </head>
 
