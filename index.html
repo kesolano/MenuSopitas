@@ -257,14 +257,14 @@
                 color: var(--marron) !important;
             }
             #btn-idioma:focus {
-            outline: none;
             outline: 2px solid var(--verde);
             box-shadow: 0 0 0 2px rgba(120, 80, 40, 0.15);
             }
-
-        }
-
-        
+            #btn-idioma:active {
+            outline: none;        /* Quita el contorno por defecto */
+            box-shadow: none;     /* Quita también la sombra si se aplica en active */
+            }
+        }   
     </style>
 </head>
 
