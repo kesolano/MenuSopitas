@@ -231,11 +231,18 @@
             box-shadow: 0 2px 8px rgba(40, 40, 40, 0.07);
             transition: background 0.2s, color 0.2s;
             cursor: pointer;
+
+            outline: none !important;
+            box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent; 
         }
 
         #btn-idioma:hover {
             background: var(--marron);
             color: white;
+    /* Asegura que no reaparezca el outline o box-shadow en hover */
+            outline: none !important; 
+            box-shadow: none !important; 
         }
 
         @media (max-width: 600px) {
@@ -253,8 +260,9 @@
             #btn-idioma:hover,
             #btn-idioma:focus,
             #btn-idioma:active {
-            outline: none !important; /* Asegúrate de que sea 'none' */
+            outline: none !important; 
             box-shadow: none !important;
+            -webkit-tap-highlight-color: transparent; 
             }
         }   
     </style>
