@@ -34,6 +34,8 @@
             right: 0;
             bottom: 0;
             z-index: 0;
+            /* background: rgba(0,0,0,0.48); */
+
         }
 
         .app-content {
@@ -63,7 +65,7 @@
 
         h1 {
             text-align: center;
-            color: var(--marron);
+            color: var(--white);
             font-size: 2rem;
             margin: 0.5rem 0 1rem 0;
         }
@@ -89,26 +91,26 @@
         }
 
         .card {
-            background: white;
+            background: transparent !important;
             border-radius: 16px;
             padding: 1rem;
-            border-left: 8px solid var(--verde);
             display: flex;
             justify-content: space-between;
-            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
+            box-shadow: none;
             align-items: flex-start;
             min-height: 52px;
         }
 
         .card .nombre {
             font-weight: bold;
-            color: var(--marron);
+            color: rgb(255, 255, 255);
             max-width: 50%;
             word-wrap: break-word;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
         }
 
         .card .nombre.vegano {
-            color: var(--verde);
+            color: white;
         }
 
         .card .opciones-vertical {
@@ -117,24 +119,26 @@
 
         .opcion-tam {
             font-weight: 500;
-            color: #464646;
+            color: #ffffff;
             margin-right: 0.5rem;
         }
 
         .opcion-tam.especial,
         .opcion-precio.especial {
-            color: var(--rojo);
+            color: white;
             font-weight: bold;
         }
 
         .opcion-precio,
         .solo-precio {
-            color: var(--azul);
+            color: white;
             font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
+            text-align: right;
         }
 
         .info {
-            color: #444;
+            color: #ffffff;
             margin-top: 0.48rem;
             font-size: 0.95rem;
             width: 100%;
@@ -142,12 +146,11 @@
         }
 
         .card_dia {
-            background: white;
+            background: transparent !important;
             border-radius: 16px;
-            border-left: 8px solid var(--verde);
-            border-right: 8px solid var(--verde);
             margin-bottom: 1rem;
             text-align: center;
+            color: white;
         }
 
         .acordeon-container {
@@ -158,39 +161,49 @@
 
         .acordeon-btn {
             width: 100%;
-            background: white;
-            color: var(--marron);
+            background: transparent;
+            color: white;
             padding: 1rem;
             font-size: 1.1rem;
             font-weight: bold;
             border-radius: 18px;
             border: 2px solid var(--marron);
-            text-align: left;
             cursor: pointer;
+            text-align: center;
             margin-bottom: 0.3rem;
             transition: background 0.2s, color 0.2s;
             display: flex;
             justify-content: space-between;
-            align-items: center;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 1);
         }
 
-        .acordeon-btn:hover,
+        .acordeon-btn:hover{
+            background: white;
+            color: rgb(0, 0, 0);
+        }
         .acordeon-btn.active {
-            background: var(--marron);
-            color: white;
+            background: transparent;
+            color: rgb(255, 249, 249);
+            text-align: center;
+        }
+        .acordeon-btn.active:hover {
+            background: white;
+            color: rgb(0, 0, 0);
         }
 
         .acordeon-panel {
             display: none;
-            background: white;
             margin-top: 0.5rem;
             border-radius: 0 0 12px 12px;
             box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+            color: white;
+            text-align: center;
         }
 
         .acordeon-panel.open {
             display: block;
             animation: fadeIn 0.3s;
+            background: transparent;
         }
 
         @keyframes fadeIn {
@@ -209,9 +222,37 @@
         }
 
         .acordeon-panel-content ul {
-            padding-left: 1.2rem;
-            margin: 0;
+        padding-left: 0;
+        margin: 0;
+        list-style: none;
         }
+
+        .acordeon-panel-content li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 6px 0;
+        font-size: 1rem;
+        color: #fff;
+        text-shadow: 1.2px 1.2px 4px rgba(0,0,0,1);
+        font-weight: bold;
+        }
+
+        .acordeon-panel-content [data-key] {
+        flex: 1 1 auto;
+        text-align: left;
+        }
+
+        .acordeon-panel-content .opcion-precio {
+        flex: 0 0 auto;
+        text-align: right;
+        font-weight: bold;
+        color: #ffffff;
+        min-width: 80px;
+        margin-left: 16px;
+        }
+
+
 
         footer {
             text-align: center;
@@ -221,8 +262,8 @@
             margin-top: auto;
         }
         #btn-idioma {
-            background: white;
-            color: var(--marron);
+            background: transparent;
+            color: white;
             border: 2px solid var(--marron);
             border-radius: 22px;
             padding: 10px 32px;
@@ -238,8 +279,8 @@
         }
 
         #btn-idioma:hover {
-            background: var(--marron);
-            color: white;
+            background: white;
+            color: rgb(0, 0, 0);
     /* Asegura que no reaparezca el outline o box-shadow en hover */
             outline: none !important; 
             box-shadow: none !important; 
@@ -312,9 +353,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            <div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- LUNES -->
@@ -395,9 +436,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            <div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- MARTES -->
@@ -477,10 +518,9 @@
                         <div><span class="solo-precio">$20.000</span></div>
                     </div>
                 </div>
-            </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            </div><div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- MIÉRCOLES -->
@@ -561,9 +601,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            <div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- JUEVES -->
@@ -647,9 +687,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            <div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- VIERNES -->
@@ -728,9 +768,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            <div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- SÁBADO -->
@@ -815,9 +855,9 @@
                     </div>
                 </div>
             </div>
-            <div class="card_dia" style="font-size:0.95rem; color:#444;margin-top:1.5rem;">
-                <span style="color:var(--marron);" data-key="impuesto">Impuesto al consumo incluido</span><br>
-                <span style="color:var(--rojo);" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
+            <div class="card_dia" style="font-size:0.95rem; color:#ffffff;margin-top:1.5rem;">
+                <span style="color: white;" data-key="impuesto">Impuesto al consumo incluido</span><br>
+                <span style="color:white;" data-key="empaques">Valor empaques domicilios $2.000 por plato.</span>
             </div>
         </div>
         <!-- ACORDEÓN DE EXTRAS -->
@@ -826,32 +866,42 @@
             <div class="acordeon-panel">
                 <div class="acordeon-panel-content">
                     <ul>
-                        <li><span data-key="miniSopitas">Mini Sopitas</span>: <span class="opcion-precio">$15.000</span>
+                        <li><span data-key="miniSopitas">Mini Sopitas</span>
+                            <span class="opcion-precio">$15.000</span>
                         </li>
-                        <li><span data-key="sopitas">Sopitas</span>: <span class="opcion-precio">$10.000</span></li>
-                        <li><span data-key="consomeCuchuquito">Consomé o Cuchuquito</span>: <span
-                                class="opcion-precio">$5.000</span></li>
-                        <li><span data-key="limonadaAdicional">Limonada Adicional</span>: <span
-                                class="opcion-precio">$1.000</span></li>
-                        <li><span data-key="gaseosas">Gaseosas</span>: <span class="opcion-precio">$4.000</span></li>
-                        <li><span data-key="colaPola">Cola y Pola</span>: <span class="opcion-precio">$4.000</span></li>
-                        <li><span data-key="cervezaNacional">Cerveza Nacional</span>: <span
-                                class="opcion-precio">$6.000</span></li>
-                        <li><span data-key="cervezaImportada">Cerveza Importada</span>: <span
-                                class="opcion-precio">$7.000</span></li>
-                        <li><span data-key="costenita">Costeñita</span>: <span class="opcion-precio">$3.500</span></li>
-                        <li><span data-key="botellaAgua">Botella Agua</span>: <span class="opcion-precio">$3.500</span>
+                        <li><span data-key="sopitas">Sopitas</span>
+                            <span class="opcion-precio">$10.000</span></li>
+
+                        <li><span data-key="consomeCuchuquito">Consomé o Cuchuquito</span>
+                            <span class="opcion-precio">$5.000</span></li>
+
+                        <li><span data-key="limonadaAdicional">Limonada Adicional</span>
+                            <span class="opcion-precio">$1.000</span></li>
+
+                        <li><span data-key="gaseosas">Gaseosas</span>
+                            <span class="opcion-precio">$4.000</span></li>
+
+                        <li><span data-key="colaPola">Cola y Pola</span>
+                            <span class="opcion-precio">$4.000</span></li>
+                        <li><span data-key="cervezaNacional">Cerveza Nacional</span>
+                            <span class="opcion-precio">$6.000</span></li>
+                        <li><span data-key="cervezaImportada">Cerveza Importada</span>
+                            <span class="opcion-precio">$7.000</span></li>
+                        <li><span data-key="costenita">Costeñita</span>
+                            <span class="opcion-precio">$3.500</span></li>
+                        <li><span data-key="botellaAgua">Botella Agua</span>
+                            <span class="opcion-precio">$3.500</span>
                         </li>
-                        <li><span data-key="aguaGas">Botella Agua Gas pequeña</span>: <span
-                                class="opcion-precio">$3.000</span></li>
-                        <li><span data-key="porcionArepa">Porción Arepa (4 Arepas)</span>: <span
-                                class="opcion-precio">$2.000</span></li>
-                        <li><span data-key="porcionArrozPapa">Porción Arroz o Papa o Yuca o Ensalada</span>: <span
-                                class="opcion-precio">$4.000</span></li>
-                        <li><span data-key="porcionEnsalada">Porción Ensalada</span>: <span
-                                class="opcion-precio">$4.000</span></li>
-                        <li><span data-key="porcionChicharron">Porción Chicharrón</span>: <span
-                                class="opcion-precio">$6.000</span></li>
+                        <li><span data-key="aguaGas">Botella Agua Gas pequeña</span>
+                            <span class="opcion-precio">$3.000</span></li>
+                        <li><span data-key="porcionArepa">Porción Arepa (4 Arepas)</span>
+                            <span class="opcion-precio">$2.000</span></li>
+                        <li><span data-key="porcionArrozPapa">Porción Arroz o Papa o Yuca o Ensalada</span>
+                            <span class="opcion-precio">$4.000</span></li>
+                        <li><span data-key="porcionEnsalada">Porción Ensalada</span>
+                            <span class="opcion-precio">$4.000</span></li>
+                        <li><span data-key="porcionChicharron">Porción Chicharrón</span>
+                            <span class="opcion-precio">$6.000</span></li>
                     </ul>
                 </div>
             </div>
